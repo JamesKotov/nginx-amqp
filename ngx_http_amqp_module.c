@@ -339,7 +339,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     b->memory=1;
     b->last_buf=1;
 
-    r->headers_out.status=NGX_HTTP_OK;
+    r->headers_out.status=NGX_HTTP_INTERNAL_SERVER_ERROR;
 
     rc=ngx_http_send_header(r);
     if(rc==NGX_ERROR||rc>NGX_OK||r->header_only){
