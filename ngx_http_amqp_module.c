@@ -232,7 +232,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     ngx_str_t response;
     ngx_str_t messagebody;
     ngx_int_t rc;
-    u_char* empty_response;
+    u_char* error_response;
 
     u_char* msg;
     u_char* msgbody;
@@ -294,18 +294,13 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
         b->pos=response.data;
         b->last=response.data+response.len;
         r->headers_out.content_length_n=response.len;
+        r->headers_out.status=NGX_HTTP_OK;
     }
     else{
-        empty_response=(u_char*)"\n";
-        b->pos=empty_response;
-        b->last=empty_response+sizeof(empty_response);
-        r->headers_out.content_length_n=sizeof(empty_response);
+        r->headers_out.status=NGX_HTTP_NO_CONTENT;
     }
     b->memory=1;
     b->last_buf=1;
-
-    r->headers_out.status=NGX_HTTP_OK;
-
 
     rc=ngx_http_send_header(r);
     if(rc==NGX_ERROR||rc>NGX_OK||r->header_only){
@@ -331,10 +326,10 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
         r->headers_out.content_length_n=response.len;
     }
     else{
-        empty_response=(u_char*)"Error!";
-        b->pos=empty_response;
-        b->last=empty_response+sizeof(empty_response);
-        r->headers_out.content_length_n=sizeof(empty_response);
+        error_response=(u_char*)"Error!";
+        b->pos=error_response;
+        b->last=error_response+sizeof(error_response);
+        r->headers_out.content_length_n=sizeof(error_response);
     }
     b->memory=1;
     b->last_buf=1;
