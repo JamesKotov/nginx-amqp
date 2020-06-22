@@ -261,6 +261,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     }
     msgbody=ngx_pcalloc(r->pool, messagebody.len);
     ngx_memcpy(msgbody, messagebody.data, messagebody.len);
+    msgbody[messagebody.len + 1] = '\0';
 
     msg=ngx_pcalloc(r->pool, 4096);
     if(!amcf->init){
