@@ -291,7 +291,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     r->headers_out.content_type.data = (u_char *) "text/html";
 
 
-    response.data=ngx_palloc(r->pool, messagebody.len + amcf->amqp_exchange.data.len + amcf->amqp_routing_key.data.len + 20 + 4096);
+    response.data=ngx_palloc(r->pool, messagebody.len + ngx_strlen(amcf->amqp_exchange.data) + ngx_strlen(amcf->amqp_routing_key.data) + 20 + 4096);
     ngx_sprintf(response.data, "%s::%s\nmessagebody: %s\n%s\n", amcf->amqp_exchange.data, amcf->amqp_routing_key.data, msgbody, msg);
     response.len=ngx_strlen(response.data);
 
