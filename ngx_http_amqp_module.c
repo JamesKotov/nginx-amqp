@@ -263,7 +263,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     ngx_memcpy(msgbody, messagebody.data, messagebody.len);
     msgbody[messagebody.len] = '\0';
 
-    msg=ngx_pcalloc(r->pool, 4096);
+    msg=ngx_pcalloc(r->pool, 32768);
     if(!amcf->init){
         amcf->init=1;
 
@@ -291,7 +291,7 @@ ngx_int_t ngx_http_amqp_handler(ngx_http_request_t* r){
     r->headers_out.content_type.data = (u_char *) "text/html";
 
 
-    response.data=ngx_palloc(r->pool, messagebody.len + ngx_strlen(amcf->amqp_exchange.data) + ngx_strlen(amcf->amqp_routing_key.data) + 20 + 4096);
+    response.data=ngx_palloc(r->pool, messagebody.len + ngx_strlen(amcf->amqp_exchange.data) + ngx_strlen(amcf->amqp_routing_key.data) + 20 + 32768);
     ngx_sprintf(response.data, "%s::%s\nmessagebody: %s\n%s\n", amcf->amqp_exchange.data, amcf->amqp_routing_key.data, msgbody, msg);
     response.len=ngx_strlen(response.data);
 
